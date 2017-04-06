@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -21,20 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
+package michal.szymanski.util;
+
+import com.google.common.net.MediaType;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.ws.rs.HttpMethod;
+
 
 /**
  *
  * @author Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com
  */
-public class Arrays{
+public class URLs {
 
-    public static String[] convertAnyArrayToStringArray(Object[] objs){
-        String[] result = new String[objs.length];
+    public static MediaType getMimeTypeOf(URL url) {
+        HttpURLConnection connection;
+        String result = null;
 
-        for(int i = 0; i < result.length; i++){
-            result[i] = String.valueOf(objs[i]);
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(HttpMethod.HEAD);
+            connection.connect();
+            result = connection.getContentType();
+        } catch (Exception e) {
+            result = MediaType.ANY_TYPE.toString();
         }
-        return result;
+        return MediaType.parse(result);
     }
+
 }

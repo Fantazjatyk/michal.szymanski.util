@@ -21,31 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-import javax.ws.rs.HttpMethod;
+package michal.szymanski.util;
 
 /**
  *
  * @author Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com
  */
-public class URLs {
+public class Arrays{
 
-    public static String getMimeTypeOf(URL url) {
-        HttpURLConnection connection;
-        String result = null;
+    public static String[] convertAnyArrayToStringArray(Object[] objs){
+        String[] result = new String[objs.length];
 
-        try {
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod(HttpMethod.HEAD);
-            connection.connect();
-            result = connection.getContentType();
-        } catch (Exception e) {
-
+        for(int i = 0; i < result.length; i++){
+            result[i] = String.valueOf(objs[i]);
         }
         return result;
     }
-
 }

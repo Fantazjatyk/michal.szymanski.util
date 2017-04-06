@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
+package michal.szymanski.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,9 +50,13 @@ public class LinesCounter {
     }
 
     public static int countLines(String input1, LineBreak lineBreak) {
+        int linesCount = 0;
+
+        if(input1.isEmpty()){
+            return linesCount;
+        }
         Pattern pattern = Pattern.compile(lineBreak.getLineBreak(), Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(input1);
-        int linesCount = 0;
 
         while (!matcher.hitEnd()) {
             if (matcher.find()) {
@@ -69,8 +73,9 @@ public class LinesCounter {
     }
 
     public static int countEmptyLines(String input, LineBreak lineBreak) {
+        String in = input.replaceAll(" +", "");
         int emptyLines = 0;
-        int offset = input.indexOf(lineBreak.getLineBreak());
+        int offset = in.indexOf(lineBreak.getLineBreak());
 
         if (offset == -1) {
             return 0;
@@ -78,7 +83,7 @@ public class LinesCounter {
 
         int patternLenght = lineBreak.getLineBreak().length();
 
-        Matcher matcher = prepareMatcher(lineBreak.getLineBreak(), input);
+        Matcher matcher = prepareMatcher(lineBreak.getLineBreak(), in);
 
         int lastMatchedID = 0;
         while (!matcher.hitEnd()) {
@@ -101,4 +106,5 @@ public class LinesCounter {
         }
         return emptyLines;
     }
+
 }

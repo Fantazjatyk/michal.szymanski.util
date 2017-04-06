@@ -21,33 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
+package michal.szymanski.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
-@author Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
+ * @author Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
  */
-public interface Mapper {
+public abstract class Mapper {
 
-    public static Map<String, Object> map(Object o){
+    public static Map<String, Object> map(Object o) {
         Map map = new HashMap();
-        Method[] methods = o.getClass().getDeclaredMethods();
 
-        for(Method method:methods){
-            if(method.getName().startsWith("get"))
-           map.put(getFieldNameFromGetter(method.getName()), getField(method, o));
-        }
+        Method[] getters = getGetters(o);
+        java.util.Arrays.stream(getters).forEach((el) -> {
+            map.put(getFieldNameFromGetter(el.getName()), getGetterResult(el, o));
+        });
+
         return map;
     }
 
-    public static String getFieldNameFromGetter(String name){
+    public static Method[] getGetters(Object o) {
+        Method[] methods = o.getClass().getMethods();
+        for (int i = 0; i < methods.length; i++) {
+            if (!methods[i].getName().startsWith("get") || methods[i].getReturnType().getTypeName().equals("void")) {
+                methods[i] = null;
+            }
+        }
+        Object[] result = java.util.Arrays.stream(methods).filter((el)->!Objects.isNull(el)).toArray();
+        return java.util.Arrays.copyOf(result, result.length, Method[].class);
+    }
+
+    private static String getFieldNameFromGetter(String name) {
         String result = name.replace("get", "");
         Character start = result.charAt(0);
         Character lowercaseStart = Character.toLowerCase(start);
@@ -55,7 +67,7 @@ public interface Mapper {
         return result;
     }
 
-    public static Object getField(Method method, Object invoker){
+    private static Object getGetterResult(Method method, Object invoker) {
         Object field = null;
         try {
             field = method.invoke(invoker);

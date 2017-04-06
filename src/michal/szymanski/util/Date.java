@@ -21,13 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
+package michal.szymanski.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  *
@@ -35,10 +33,10 @@ import java.util.GregorianCalendar;
  */
 public class Date {
 
-    public static String dateStringValueOf(int year, int month, int day) {
+    public static String getDateToString(int year, int month, int day, DateTimeFormatter format) {
         String result;
         LocalDate localDate = LocalDate.of(year, month, day);
-        result = localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        result = localDate.format(format);
         return result;
     }
 
@@ -50,17 +48,15 @@ public class Date {
 
     public static int[] getArrayOfLastAvaibleDaysInMonths(int year) {
         int[] months = new int[12];
-        Calendar calendar;
 
-        for (int i = 0; i < months.length; i++) {
-            calendar = new GregorianCalendar(year, i, 1);
-            months[i] = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        for (int i = 1; i < months.length; i++) {
+            months[i] = Date.getLastAvaibleDayInMonth(year, i);
         }
 
         return months;
     }
 
-    private static boolean isActualMonth(int year, int month) {
+    public static boolean isActualMonth(int year, int month) {
         int actualYear = LocalDate.now().getYear();
         int actualMonth = LocalDate.now().getMonthValue();
 

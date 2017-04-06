@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package michal.szymanski.commons;
+package michal.szymanski.util;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,12 +34,8 @@ import java.util.regex.Pattern;
  */
 public class Strings {
 
-    public static String[] cutMatchingFragments(String source, String regexp, boolean ignoreCase) {
+    public static String[] cutMatchingFragments(String source, String regexp) {
         List<String> result = new ArrayList();
-        if (ignoreCase) {
-            regexp = regexp.toLowerCase();
-        }
-
         if (regexp.isEmpty()) {
             return new String[0];
         }
@@ -54,8 +51,17 @@ public class Strings {
         return result.toArray(new String[0]);
     }
 
+    public static String[] cutMatchingFragmentIgnoreCase(String source, String regexp){
+        return Strings.cutMatchingFragments(source.toLowerCase(), regexp.toLowerCase());
+    }
+
     public static String[] splitByCommas(String input) {
-        String[] result = input.trim().split("\\s*,\\s*");
+        String[] result = new String[0];
+
+        if (input.isEmpty()) {
+            return result;
+        }
+        result = input.trim().replaceAll("\\s*", "").split("\\s*,\\s*");
         for (int i = 0; i < result.length; i++) {
             result[i] = result[i].trim();
         }
