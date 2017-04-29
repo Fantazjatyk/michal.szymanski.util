@@ -25,9 +25,9 @@ package michal.szymanski.util;
 
 import com.google.common.net.MediaType;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import javax.ws.rs.HttpMethod;
-
 
 /**
  *
@@ -48,6 +48,19 @@ public class URLs {
             result = MediaType.ANY_TYPE.toString();
         }
         return MediaType.parse(result);
+    }
+
+    public static boolean isBelongsToDomain(String domainURL, String url) {
+        URL testUrl = null;
+        try {
+            testUrl = new URL(url);
+            URL newURL = new URL(domainURL);
+            String host = newURL.getHost();
+            return host.equalsIgnoreCase(testUrl.getHost());
+
+        } catch (MalformedURLException ex) {
+            return false;
+        }
     }
 
 }
