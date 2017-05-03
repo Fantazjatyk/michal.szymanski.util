@@ -34,16 +34,14 @@ import java.time.temporal.TemporalAdjusters;
 public class Date {
 
     public static String getDateToString(int year, int month, int day, DateTimeFormatter format) {
-        String result;
         LocalDate localDate = LocalDate.of(year, month, day);
-        result = localDate.format(format);
-        return result;
+
+        return localDate.format(format);
     }
 
     public static int getLastAvaibleDayInMonth(int year, int month) {
-        int result;
-        result = isActualMonth(year, month) ? LocalDate.now().getDayOfMonth() : LocalDate.of(year, month, 1).with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();;
-        return result;
+
+        return isActualMonth(year, month) ? LocalDate.now().getDayOfMonth() : LocalDate.of(year, month, 1).with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
     }
 
     public static int[] getArrayOfLastAvaibleDaysInMonths(int year) {

@@ -38,7 +38,7 @@ public class LinesCounter {
         UNIX("\n"),
         WINDOWS("");
 
-        String lineBreak;
+        private String lineBreak;
 
         LineBreak(String string) {
             this.lineBreak = string;
@@ -52,7 +52,7 @@ public class LinesCounter {
     public static int countLines(String input1, LineBreak lineBreak) {
         int linesCount = 0;
 
-        if(input1.isEmpty()){
+        if (input1.isEmpty()) {
             return linesCount;
         }
         Pattern pattern = Pattern.compile(lineBreak.getLineBreak(), Pattern.MULTILINE);
@@ -72,6 +72,7 @@ public class LinesCounter {
         return pattern.matcher(input);
     }
 
+    // I should refractor this...
     public static int countEmptyLines(String input, LineBreak lineBreak) {
         String in = input.replaceAll(" +", "");
         int emptyLines = 0;
@@ -87,9 +88,9 @@ public class LinesCounter {
 
         int lastMatchedID = 0;
         while (!matcher.hitEnd()) {
-            while (matcher.find(offset)) { // matcher find
+            while (matcher.find(offset)) {
                 matcher.region(offset, offset + patternLenght);
-                if (matcher.find()) { // if(zaraz po nim jest kolejny){
+                if (matcher.find()) {
                     int matchedStart = matcher.start();
 
                     if (matchedStart == lastMatchedID && offset != 0) {

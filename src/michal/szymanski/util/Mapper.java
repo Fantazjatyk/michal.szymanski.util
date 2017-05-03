@@ -55,7 +55,7 @@ public abstract class Mapper {
                 methods[i] = null;
             }
         }
-        Object[] result = java.util.Arrays.stream(methods).filter((el)->!Objects.isNull(el)).toArray();
+        Object[] result = java.util.Arrays.stream(methods).filter((el) -> !Objects.isNull(el)).toArray();
         return java.util.Arrays.copyOf(result, result.length, Method[].class);
     }
 
@@ -71,11 +71,7 @@ public abstract class Mapper {
         Object field = null;
         try {
             field = method.invoke(invoker);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Mapper.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Mapper.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(Mapper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return field;
