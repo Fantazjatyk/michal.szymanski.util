@@ -61,6 +61,8 @@ public class Strings {
         if (input.isEmpty()) {
             return result;
         }
+        // Poprawić - najpierw dzielić według przecinków, 
+        // a dopiero potem robić trim z początku i końca wyrażeń.
         result = input.trim().replaceAll("\\s*", "").split("\\s*,\\s*");
         for (int i = 0; i < result.length; i++) {
             result[i] = result[i].trim();
